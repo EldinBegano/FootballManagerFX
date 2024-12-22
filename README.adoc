@@ -1,0 +1,20 @@
+= FootballManagerFX
+
+== Projektbeschreibung
+In diesem Spiel können Benutzer ihr eigenes Fußballteam auswählen, Spieler kaufen und verkaufen und eine Liga simulieren, um die besten Teams zu ermitteln. Das Spiel basiert auf der Verwaltung von Spielern, die aus einer CSV-Datei geladen werden, und auf einer zufälligen Punktevergabe für die Liga.
+
+== Features
+- Auswahl eines Fußballteams
+- Verwaltung der Spieler im Team (Kauf und Verkauf)
+- Anzeige von Spielern in einer Tabelle (`TableView`)
+- Zufällige Punktevergabe und Simulation einer Liga
+- CSV-Datei zum Laden neuer Spieler
+- Einfache Benutzeroberfläche mit Buttons für Interaktion
+
+== CSV-Dateiformat
+
+Die CSV-Datei für die Spieler sollte im folgenden Format vorliegen:
+
+```
+Name;Position;Preis
+```
