@@ -2,10 +2,7 @@ package at.htl.player.view;
 
 import at.htl.player.model.Player;
 import com.sun.javafx.scene.control.DoubleField;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 
@@ -21,10 +18,39 @@ public class PlayerView extends VBox {
     final TableView<Player> tableView = new TableView<>();
 
     public PlayerView() {
+        //Tabelle
+        initTableColumns();
         GridPane pane = content();
         this.getChildren().add(tableView);
         this.setSpacing(40);
         this.getChildren().add(pane);
+    }
+
+    private void initTableColumns() {
+        //TableView ist ein dreck
+        TableColumn<Player, String> nameColumn = new TableColumn<>("Name");
+        nameColumn.setCellValueFactory(cellData -> cellData.getValue().nameProperty());
+
+        TableColumn<Player, String> positionColumn = new TableColumn<>("Position");
+        positionColumn.setCellValueFactory(cellData -> cellData.getValue().positionProperty());
+
+        TableColumn<Player, Double> valueColumn = new TableColumn<>("Value");
+        valueColumn.setCellValueFactory(cellData -> cellData.getValue().valueProperty().asObject());
+
+        /*
+        Ich hol mir die width vom tableview mit dem listener, diese ändert sich wenn man das fenster bewegt
+        obs ist die property die sich ändert(width)
+        oldwidth ist die alte width, newwidth ist die neue
+        */
+        tableView.widthProperty().addListener((obs, oldWidth, newWidth) -> {
+            double width = newWidth.doubleValue();
+            double columnWidth = width / 3;
+            nameColumn.setPrefWidth(columnWidth);
+            positionColumn.setPrefWidth(columnWidth);
+            valueColumn.setPrefWidth(columnWidth);
+        });
+
+        tableView.getColumns().addAll(nameColumn, positionColumn, valueColumn);
     }
 
     private GridPane content(){
