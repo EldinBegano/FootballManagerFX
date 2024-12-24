@@ -31,7 +31,7 @@ public class PlayerPresenter {
         bindViewToModel();
         bindListToView();
         buttonFunctions();
-        loadPlayersFromCSV("test.csv");
+        loadPlayersFromCSV("teams/bayern.csv");
     }
 
     private void loadPlayersFromCSV(String filePath) {

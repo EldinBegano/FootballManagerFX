@@ -31,7 +31,7 @@ public class PlayerView extends VBox {
                 "Bayern München",
                 "Borussia Dortmund",
                 "Borussia Mönchengladbach",
-                "1. FC Kön",
+                "1. FC Köln",
                 "1. FSV Mainz 05",
                 "1. FC Union Berlin",
                 "RB Leipzig",
