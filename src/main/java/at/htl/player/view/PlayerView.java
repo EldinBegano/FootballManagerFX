@@ -7,7 +7,6 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 
 public class PlayerView extends VBox {
-    //Create your own Player
     final TextField name = new TextField();
     final TextField position = new TextField();
     final DoubleField value = new DoubleField();
@@ -16,14 +15,61 @@ public class PlayerView extends VBox {
     final Button simulate = new Button("Simulate");
 
     final TableView<Player> tableView = new TableView<>();
+    private String selectedTeam;
 
+    final ComboBox<String> comboBox = new ComboBox<>();
+    final Button confirm = new Button("Confirm");
+
+    // Constructor
     public PlayerView() {
-        //Tabelle
+        showTeams();
+    }
+
+    private void showTeams() {
+        comboBox.getItems().addAll(
+                "Bayer 04 Leverkusen",
+                "Bayern München",
+                "Borussia Dortmund",
+                "Borussia Mönchengladbach",
+                "1. FC Kön",
+                "1. FSV Mainz 05",
+                "1. FC Union Berlin",
+                "RB Leipzig",
+                "SC Freiburg",
+                "VfB Stuttgart",
+                "VfL Bochum",
+                "VfL Wolfsburg",
+                "Werder Bremen",
+                "FC Augsburg",
+                "Eintracht Frankfurt",
+                "Heidenheim 1846",
+                "Holstein Kiel"
+        );
+
+        comboBox.setValue("Bayern Munich");
+        selectedTeam = "Bayern Munich";
+
+        confirm.setOnAction(e -> onTeamSelected());
+
+        GridPane teamGrid = new GridPane(10, 10);
+        teamGrid.add(new Label("Select Team:"), 0, 0);
+        teamGrid.add(comboBox, 1, 0);
+        teamGrid.add(confirm, 0, 1, 2, 1);
+
+        this.getChildren().add(teamGrid);
+    }
+
+    private void onTeamSelected() {
+        //Löschen der Auswahl
+        this.getChildren().clear();
+        showYourTeam();
+    }
+
+    private void showYourTeam() {
+        GridPane playerForm = content();
         initTableColumns();
-        GridPane pane = content();
         this.getChildren().add(tableView);
-        this.setSpacing(40);
-        this.getChildren().add(pane);
+        this.getChildren().add(playerForm);
     }
 
     private void initTableColumns() {
@@ -34,7 +80,7 @@ public class PlayerView extends VBox {
         TableColumn<Player, String> positionColumn = new TableColumn<>("Position");
         positionColumn.setCellValueFactory(cellData -> cellData.getValue().positionProperty());
 
-        TableColumn<Player, Double> valueColumn = new TableColumn<>("Value");
+        TableColumn<Player, Double> valueColumn = new TableColumn<>("Value (in Million)");
         valueColumn.setCellValueFactory(cellData -> cellData.getValue().valueProperty().asObject());
 
         /*
@@ -53,8 +99,10 @@ public class PlayerView extends VBox {
         tableView.getColumns().addAll(nameColumn, positionColumn, valueColumn);
     }
 
-    private GridPane content(){
-        GridPane gridPane = new GridPane(10,10);
+    private GridPane content() {
+        GridPane gridPane = new GridPane();
+        gridPane.setVgap(10);
+        gridPane.setHgap(10);
 
         Label nameLabel = new Label("Name:");
         Label positionLabel = new Label("Position:");
@@ -102,5 +150,9 @@ public class PlayerView extends VBox {
 
     public TableView<Player> getTableView() {
         return tableView;
+    }
+
+    public String getSelectedTeam() {
+        return selectedTeam;
     }
 }

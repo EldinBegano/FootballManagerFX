@@ -29,6 +29,9 @@ public class Player {
     public Player() {
     }
 
+    public Player(Player copy){
+        this(copy.getName(), copy.getPosition(), copy.getValue());
+    }
 
     public String getName() {
         return name.get();
