@@ -71,8 +71,8 @@ public class PlayerView extends VBox {
                 "Holstein Kiel"
         );
 
-        comboBox.setValue("Bayern Munich");
-        selectedTeam = "Bayern Munich";
+        comboBox.setValue("Bayern München");
+        selectedTeam = "Bayern München";
 
         comboBox.valueProperty().addListener((_, _, newValue) -> {
             selectedTeam = newValue;
@@ -135,6 +135,7 @@ public class PlayerView extends VBox {
     }
 
     private void onTeamSelected() {
+        PlayerPresenter presenter = new PlayerPresenter(new Player(), this);
         System.out.println(selectedTeam);
         stage.setHeight(800);
         stage.setWidth(500);
