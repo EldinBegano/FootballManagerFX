@@ -3,16 +3,6 @@ package at.htl.player.view;
 import at.htl.player.model.Player;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
-import javafx.stage.StageStyle;
-
-import javax.swing.text.Position;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -58,9 +48,9 @@ public class PlayerPresenter {
 
 
     private void buttonFunctions() {
-        view.getBuy().setOnAction(action -> buyPlayer());
-        view.getSell().setOnAction(action -> sellPlayer());
-        view.getSimulate().setOnAction(action -> simulateGame());
+        view.getBuy().setOnAction(_ -> buyPlayer());
+        view.getSell().setOnAction(_ -> sellPlayer());
+        view.getSimulate().setOnAction(_ -> simulateGame());
     }
 
     private void simulateGame() {

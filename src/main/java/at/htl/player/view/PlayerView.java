@@ -3,8 +3,18 @@ package at.htl.player.view;
 import at.htl.player.model.Player;
 import com.sun.javafx.scene.control.DoubleField;
 import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
+
+import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
 
 public class PlayerView extends VBox {
     final TextField name = new TextField();
@@ -20,12 +30,27 @@ public class PlayerView extends VBox {
     final ComboBox<String> comboBox = new ComboBox<>();
     final Button confirm = new Button("Confirm");
 
+    private final Stage stage;
+
     // Constructor
-    public PlayerView() {
+    public PlayerView(Stage stage) {
+        this.stage = stage;
         showTeams();
     }
 
     private void showTeams() {
+        //Bilder mit AI gemacht
+        Map<String, String> teamImages = getImages();
+        URL imageUrl = getClass().getResource("/images/bayern.png");
+        if (imageUrl == null) {
+            System.out.println("Image not found!");
+            return;
+        }
+        Image preview = new Image(imageUrl.toString());
+        ImageView imageView = new ImageView(preview);
+
+        imageView.setFitWidth(100);
+        imageView.setFitHeight(100);
         comboBox.getItems().addAll(
                 "Bayer 04 Leverkusen",
                 "Bayern München",
@@ -49,17 +74,70 @@ public class PlayerView extends VBox {
         comboBox.setValue("Bayern Munich");
         selectedTeam = "Bayern Munich";
 
-        confirm.setOnAction(e -> onTeamSelected());
+        comboBox.valueProperty().addListener((_, _, newValue) -> {
+            selectedTeam = newValue;
+            updateImageView(newValue, imageView, teamImages);
+        });
+
+        confirm.setOnAction(_ -> onTeamSelected());
 
         GridPane teamGrid = new GridPane(10, 10);
-        teamGrid.add(new Label("Select Team:"), 0, 0);
-        teamGrid.add(comboBox, 1, 0);
-        teamGrid.add(confirm, 0, 1, 2, 1);
+        teamGrid.add(imageView, 0, 0, 2, 1);
+        teamGrid.add(new Label("Select Team:"), 0, 1);
+        teamGrid.add(comboBox, 1, 1);
+        teamGrid.add(confirm, 0, 2, 2, 1);
 
         this.getChildren().add(teamGrid);
     }
 
+    //Extrahierte Methode
+    private static Map<String, String> getImages() {
+        Map<String, String> teamImages = new HashMap<>();
+        teamImages.put("Bayer 04 Leverkusen", "/images/bayer.png");
+        teamImages.put("Bayern München", "/images/bayern.png");
+        teamImages.put("Borussia Dortmund", "/images/dortmund.png");
+        teamImages.put("Borussia Mönchengladbach", "/images/gladbach.png");
+        teamImages.put("1. FC Köln", "/images/cologne.png");
+        teamImages.put("1. FSV Mainz 05", "/images/mainz.png");
+        teamImages.put("1. FC Union Berlin", "/images/union.png");
+        teamImages.put("RB Leipzig", "/images/leipzig.png");
+        teamImages.put("SC Freiburg", "/images/freiburg.png");
+        teamImages.put("VfB Stuttgart", "/images/stuttgart.png");
+        teamImages.put("VfL Bochum", "/images/bochum.png");
+        teamImages.put("VfL Wolfsburg", "/images/wolfsburg.png");
+        teamImages.put("Werder Bremen", "/images/bremen.png");
+        teamImages.put("FC Augsburg", "/images/augsburg.png");
+        teamImages.put("Eintracht Frankfurt", "/images/frankfurt.png");
+        teamImages.put("Heidenheim 1846", "/images/heidenheim.png");
+        teamImages.put("Holstein Kiel", "/images/kiel.png");
+        return teamImages;
+    }
+
+    private void updateImageView(String teamName, ImageView imageView, Map<String, String> teamImages) {
+        String imagePath = teamImages.get(teamName);
+        if (imagePath != null) {
+            URL imageUrl = getClass().getResource(imagePath);
+            if (imageUrl != null) {
+                Image image = new Image(imageUrl.toString());
+                imageView.setImage(image);
+
+                double maxWidth = 100;
+                double maxHeight = 100;
+
+                imageView.setFitWidth(maxWidth);
+                imageView.setFitHeight(maxHeight);
+                imageView.setPreserveRatio(true);
+                imageView.setSmooth(true);
+            } else {
+                System.out.println("Image not found for team: " + teamName);
+            }
+        }
+    }
+
     private void onTeamSelected() {
+        System.out.println(selectedTeam);
+        stage.setHeight(800);
+        stage.setWidth(500);
         //Löschen der Auswahl
         this.getChildren().clear();
         showYourTeam();
@@ -88,7 +166,7 @@ public class PlayerView extends VBox {
         obs ist die property die sich ändert(width)
         oldwidth ist die alte width, newwidth ist die neue
         */
-        tableView.widthProperty().addListener((obs, oldWidth, newWidth) -> {
+        tableView.widthProperty().addListener((_, _, newWidth) -> {
             double width = newWidth.doubleValue();
             double columnWidth = width / 3;
             nameColumn.setPrefWidth(columnWidth);
